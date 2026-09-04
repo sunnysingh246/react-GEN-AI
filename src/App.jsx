@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import './App.css'
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${API_KEY}`;
 import Answers from './components/Answers'
 
+
+console.log("API KEY EXISTS:", !!API_KEY)
 const App = () => {
   const [question, setQuestion] = useState("")
   const [result, setResult] = useState(undefined)
@@ -16,7 +19,7 @@ const App = () => {
   const askQuestion = async () => {
 
     try {
-      let response = await fetch(API_KEY, {
+      let response = await fetch(url, {
         method: "POST",
         headers: {
           "COntent-type": "application/json"
