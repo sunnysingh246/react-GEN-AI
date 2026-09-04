@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './App.css'
-import { URl as url } from './constants/constants'
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 import Answers from './components/Answers'
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
   const askQuestion = async () => {
 
     try {
-      let response = await fetch(url, {
+      let response = await fetch(API_KEY, {
         method: "POST",
         headers: {
           "COntent-type": "application/json"
@@ -25,7 +25,7 @@ const App = () => {
       })
 
       if (!response.ok) {
-        const error = await response.jdon()
+        const error = await response.json()
         console.log("API ERROR: ", error)
         return
       }
