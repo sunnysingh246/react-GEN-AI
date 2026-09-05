@@ -5,7 +5,7 @@ const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-
 import Answers from './components/Answers'
 
 
-console.log("API KEY EXISTS:", !!API_KEY)
+//console.log("API KEY EXISTS:", !!API_KEY)
 const App = () => {
   const [question, setQuestion] = useState("")
   const [result, setResult] = useState(undefined)
@@ -37,7 +37,7 @@ const App = () => {
       let dataString = response.candidates[0].content.parts[0].text
       dataString = dataString.split("*")
       dataString = dataString.map((item) => item.trim())
-      console.log(dataString)
+      //console.log(dataString)
 
       setResult(dataString)
 
@@ -53,12 +53,12 @@ const App = () => {
 
       <div className="col-span-4 p-10">
         <div className="container h-145 overflow-y-hidden overflow-x-hidden">
-          <div className='text-white'>
+          <div className='text-zinc-300'>
             <ul>
             //{result}
               {
                 result && result.map((items) => (
-                  <li className='text-left p-10'><Answers ans={items} key={index} /></li>
+                  <li className='text-left p-10'><Answers ans={items} /></li>
                 ))
               }
               <Answers />

@@ -1,11 +1,7 @@
-import React from 'react'
-
-const helper = (str) => {
-  return (
-    <div>
-      return //
-    </div>
-  )
+export function checkHeading(str) {
+  return /^#{1,6}\s+.+/.test(str)
 }
 
-export default helper
+export function replaceHeading(str) {
+  return str.replace(/^\s*#{1,6}\s+/, '')
+}
