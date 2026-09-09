@@ -57,8 +57,8 @@ const App = () => {
             <ul>
             //{result}
               {
-                result && result.map((items) => (
-                  <li className='text-left p-10'><Answers ans={items} /></li>
+                result && result.map((items, index) => (
+                  <li className='text-left p-10'><Answers ans={items} totalResult={result.length} index={index} /></li>
                 ))
               }
               <Answers />
