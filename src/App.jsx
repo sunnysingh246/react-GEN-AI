@@ -39,7 +39,7 @@ const App = () => {
       dataString = dataString.map((item) => item.trim())
       //console.log(dataString)
 
-      setResult(dataString)
+      setResult([...result,{type:'q',text:question}])
 
     } catch (error) {
       console.log("Fetch error", error)
@@ -54,15 +54,15 @@ const App = () => {
       <div className="col-span-4 p-10">
         <div className="container h-145 overflow-y-hidden overflow-x-hidden">
           <div className='text-zinc-300'>
-            <ul>
+            {/* <ul>
             //{result}
               {
                 result && result.map((items, index) => (
-                  <li className='text-left p-10'><Answers ans={items} totalResult={result.length} index={index} /></li>
+                  <li key={index+Math.random()} className='text-left p-10'><Answers ans={items} totalResult={result.length} index={index} /></li>
                 ))
               }
               <Answers />
-            </ul>
+            </ul> */}
           </div>
         </div>
 
