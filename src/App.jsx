@@ -1,33 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './App.css'
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${API_KEY}`;
 import Answers from './components/Answers'
-import { log } from 'node:console';
+
 
 
 const App = () => {
   const [question, setQuestion] = useState("")
   const [result, setResult] = useState([])
   const [recentHistory, setRecentHistory] = useState(JSON.parse(localStorage.getItem('history')))
+  const [selectedHistory, setSelectedHistory] = useState('')
+  const scrollToAns = useRef()
+  const [loader, setLoader] = useState(false)
 
-  const payload = {
-    "contents": [{
-      "parts": [{ "text": "Explain how AI works" }]
-    }]
-  }
 
   const askQuestion = async () => {
-    if (!question) return false
-    if (localStorage.getItem('history')) {
-      let history = JSON.parse(localStorage.getItem('history'))
-      history = [question, ...history]
-      localStorage.setItem('history', JSON.stringify('history'))
-      setRecentHistory(history)
-    } else {
-      localStorage.setItem('history', JSON.stringify(question))
-      setRecentHistory([question])
+    if (!question && !selectedHistory) { return false }
+
+    if (question) {
+      if (localStorage.getItem('history')) {
+        let history = JSON.parse(localStorage.getItem('history'))
+        history = [question, ...history]
+        localStorage.setItem('history', JSON.stringify('history'))
+        setRecentHistory(history)
+      } else {
+        localStorage.setItem('history', JSON.stringify(question))
+        setRecentHistory([question])
+      }
     }
+
+    const payLoadData = question ? question : selectedHistory
+    const payload = {
+      "contents": [{
+        "parts": [{ "text": payLoadData }]
+      }]
+    }
+    setLoader(true)
 
     try {
       let response = await fetch(url, {
@@ -50,8 +59,14 @@ const App = () => {
       dataString = dataString.map((item) => item.trim())
       //console.log(dataString)
 
-      setResult([...result, { type: 'q', text: question }, { type: 'a', text: dataString }])
+      setResult([...result, { type: 'q', text: question ? question : selectedHistory }, { type: 'a', text: dataString }])
       setQuestion('')
+
+      setTimeout(() => {
+        scrollToAns.current.scrollTop = scrollToAns.current.scrollHeight;
+      }, 500)
+
+      setLoader(false)
 
     } catch (error) {
       console.log("Fetch error", error)
@@ -69,6 +84,11 @@ const App = () => {
       askQuestion();
   }
 
+  useEffect(() => {
+    console.log(selectedHistory)
+    askQuestion()
+  }, [selectedHistory])
+
   return (
     <div className="grid grid-cols-5 h-screen text-center">
       <div className="col-span-1 bg-zinc-800 pt-3">
@@ -84,15 +104,26 @@ const App = () => {
 
         <ul className='text-left overflow-auto text-sm mt-2'>
           {
-            recentHistory && recentHistory.map((item) => (
-              <li className='p-1 pl-5 px-5 truncate text-zinc-400 cursor-pointer hover:bg-zinc-700 hover:text-zinc-200'>{item}</li>
+            Array.isArray(recentHistory) && recentHistory.map((item) => (
+              <li
+                onClick={() => setSelectedHistory(item)}
+                className='p-1 pl-5 px-5 truncate text-zinc-400 cursor-pointer hover:bg-zinc-700 hover:text-zinc-200'>{item}</li>
             ))
           }
         </ul>
       </div>
 
       <div className="col-span-4 p-10">
-        <div className="container h-145 overflow-y-hidden overflow-x-hidden">
+        <h1 
+        className='text-4xl bg-clip-text text-transparent bg-gradient-to-r from pink-700 to voilet-700'>
+          Hello user , ask me anything
+          </h1>
+
+        {
+          loader ? <svg width="60" height="60" viewBox="0 0 44 44"><g transform="rotate(0 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(45 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.1875s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(90 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.375s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(135 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.5625s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(180 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.75s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(225 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.9375s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(270 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="1.125s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(315 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="1.3125s" repeatCount="indefinite"></animate></circle></g></svg> : null
+        }
+
+        <div ref={scrollToAns} className="container h-145 overflow-y-hidden overflow-x-hidden">
           <div className='text-zinc-300'>
             <ul>
 
@@ -134,4 +165,4 @@ const App = () => {
     </div >
   )
 }
-export default App
+export default App;
