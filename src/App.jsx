@@ -5,10 +5,10 @@ const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-
 import Answers from './components/Answers'
 
 
-
 const App = () => {
   const [question, setQuestion] = useState("")
   const [result, setResult] = useState([])
+  const [recentHistory, setRecentHistory] = useState(JSON.parse(localStorage.getItem('history')))
 
   const payload = {
     "contents": [{
@@ -17,12 +17,21 @@ const App = () => {
   }
 
   const askQuestion = async () => {
+    if (localStorage.getItem('history')) {
+      let history = JSON.parse(localStorage.getItem('history'))
+      history = [question, ...history]
+      localStorage.setItem('history', JSON.stringify('history'))
+      setRecentHistory(history)
+    } else {
+      localStorage.setItem('history', JSON.stringify(question))
+      setRecentHistory([question])
+    }
 
     try {
       let response = await fetch(url, {
         method: "POST",
         headers: {
-          "COntent-type": "application/json"
+          "Content-type": "application/json"
         },
         body: JSON.stringify(payload)
       })
@@ -45,10 +54,18 @@ const App = () => {
       console.log("Fetch error", error)
     }
   }
+  console.log(result)
 
   return (
     <div className="grid grid-cols-5 h-screen text-center">
       <div className="col-span-1 bg-zinc-800">
+        <ul>
+          {
+            recentHistory && recentHistory.map((item) => (
+              <li>{item}</li>
+            ))
+          }
+        </ul>
       </div>
 
       <div className="col-span-4 p-10">
@@ -72,6 +89,7 @@ const App = () => {
                           </li>
                         ))
                     }
+
                   </div>
                 ))
               }
