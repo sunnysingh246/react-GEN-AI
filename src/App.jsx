@@ -5,10 +5,10 @@ const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-
 import Answers from './components/Answers'
 
 
-//console.log("API KEY EXISTS:", !!API_KEY)
+
 const App = () => {
   const [question, setQuestion] = useState("")
-  const [result, setResult] = useState(undefined)
+  const [result, setResult] = useState([])
 
   const payload = {
     "contents": [{
@@ -39,7 +39,7 @@ const App = () => {
       dataString = dataString.map((item) => item.trim())
       //console.log(dataString)
 
-      setResult([...result,{type:'q',text:question}])
+      setResult([...result, { type: 'q', text: question }])
 
     } catch (error) {
       console.log("Fetch error", error)
@@ -54,15 +54,28 @@ const App = () => {
       <div className="col-span-4 p-10">
         <div className="container h-145 overflow-y-hidden overflow-x-hidden">
           <div className='text-zinc-300'>
-            {/* <ul>
-            //{result}
+            <ul>
+
               {
-                result && result.map((items, index) => (
-                  <li key={index+Math.random()} className='text-left p-10'><Answers ans={items} totalResult={result.length} index={index} /></li>
+                result.map((item, index) => (
+                  <div key={index + Math.random()} className={item.type == 'q' ? 'flex justify-end' : 'flex'}>
+                    {
+                      item.type == 'q' ?
+                        <li key={index + Math.random()}
+                          className='text-right p-2 border-8 bg-zinc-700 border-zinc-700 rounded-tl-3xl rounded-br-3xl rounded-bf-3xl w-fit gap-2'
+                        ><Answers ans={item.text} totalResult={1} index={index} type={item.type} />
+                        </li>
+                        : item.text.map((ansItem, ansIndex) => (
+                          <li key={index + Math.random()}
+                            className='text-left p-10'>
+                            <Answers ans={ansItem} totalResult={ansItem.length} type={item.type} index={ansIndex} />
+                          </li>
+                        ))
+                    }
+                  </div>
                 ))
               }
-              <Answers />
-            </ul> */}
+            </ul>
           </div>
         </div>
 
@@ -77,8 +90,7 @@ const App = () => {
           <button onClick={askQuestion}>Ask</button>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
-
 export default App
