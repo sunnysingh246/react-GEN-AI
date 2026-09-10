@@ -3,6 +3,7 @@ import './App.css'
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${API_KEY}`;
 import Answers from './components/Answers'
+import { log } from 'node:console';
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
   }
 
   const askQuestion = async () => {
+    if (!question) return false
     if (localStorage.getItem('history')) {
       let history = JSON.parse(localStorage.getItem('history'))
       history = [question, ...history]
@@ -48,7 +50,8 @@ const App = () => {
       dataString = dataString.map((item) => item.trim())
       //console.log(dataString)
 
-      setResult([...result, { type: 'q', text: question }])
+      setResult([...result, { type: 'q', text: question }, { type: 'a', text: dataString }])
+      setQuestion('')
 
     } catch (error) {
       console.log("Fetch error", error)
@@ -56,9 +59,14 @@ const App = () => {
   }
   console.log(result)
 
-  const clearHistory = ()=>{
+  const clearHistory = () => {
     localStorage.clear()
     setRecentHistory([])
+  }
+
+  const isEnter = (event) => {
+    if (event.key == 'Enter')
+      askQuestion();
   }
 
   return (
@@ -104,7 +112,6 @@ const App = () => {
                           </li>
                         ))
                     }
-
                   </div>
                 ))
               }
@@ -114,6 +121,7 @@ const App = () => {
 
         <div className="bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl border border-zinc-400 flex h-16 mt-20">
           <input
+            onKeyDown={isEnter}
             onChange={(e) => setQuestion(e.target.value)}
             value={question}
             type="text"
