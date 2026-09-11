@@ -7,8 +7,8 @@ const RecentSearch = (recentHistory, setRecentHistory, setSelectedHistory) => {
   }
   return (
     <>
-      <div className="col-span-1 bg-zinc-800 pt-3">
-        <h1 className='text-xl text-white flex justify-center'>
+      <div className="col-span-1 dark: bg-zinc-800 bg-red-100 pt-3">
+        <h1 className='text-xl dark: text-white text-zinc-800  flex justify-center'>
           <span>Recent history</span>
           <button
             onClick={clearHistory}
@@ -24,7 +24,7 @@ const RecentSearch = (recentHistory, setRecentHistory, setSelectedHistory) => {
               <li
                 key={index}
                 onClick={() => setSelectedHistory(item)}
-                className='p-1 pl-5 px-5 truncate text-zinc-400 cursor-pointer hover:bg-zinc-700 hover:text-zinc-200'>{item}</li>
+                className='p-1 pl-5 px-5 truncate dark: text-zinc-400 text-zinc-700 cursor-pointer dark: hover:bg-zinc-700 dark: hover:text-zinc-200 bg-red-200 hover:text-zinc-800'>{item}</li>
             ))
           }
         </ul>

@@ -87,54 +87,77 @@ const App = () => {
     askQuestion()
   }, [selectedHistory])
 
+  // dark mode
+  const [darkMode, setDarkMode] = useState('dark')
+
+  useEffect(() => {
+    console.log(darkMode)
+    if (darkMode == 'darkMode') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [darkMode])
+
   return (
-    <div className="grid grid-cols-5 h-screen text-center">
-      <RecentSearch
-        recentHistory={recentHistory}
-        setRecentHistory={recentHistory}
-        setSelectedHistory={setSelectedHistory}
-      />
+    <div className={darkMode == 'dark' ? dark : light}>
+      <div className="grid grid-cols-5 h-screen text-center">
 
-      <div className="col-span-4 p-10">
-        <h1
-          className='text-4xl bg-clip-text text-transparent bg-gradient-to-rt from pink-700 to voilet-700'>
-          Hello user , ask me anything
-        </h1>
+        <select
+          onChange={(event) => setDarkMode(event.target.value)}
+          className='fixed text-white bottom-0 p-5'>
+          <option value="Dark">Dark</option>
+          <option value="Light">Light</option>
+        </select>
 
-        {
-          loader ? <svg width="60" height="60" viewBox="0 0 44 44"><g transform="rotate(0 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(45 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.1875s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(90 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.375s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(135 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.5625s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(180 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.75s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(225 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.9375s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(270 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="1.125s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(315 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="1.3125s" repeatCount="indefinite"></animate></circle></g></svg> : null
-        }
+        <RecentSearch
+          recentHistory={recentHistory}
+          setRecentHistory={recentHistory}
+          setSelectedHistory={setSelectedHistory}
+        />
 
-        <div ref={scrollToAns} className="container h-145 overflow-y-hidden overflow-x-hidden">
-          <div className='text-zinc-300'>
-            <ul>
+        <div className="col-span-4 p-10">
+          <h1
+            className='text-4xl bg-clip-text text-transparent bg-gradient-to-rt from pink-700 to voilet-700'>
+            Hello user , ask me anything
+          </h1>
 
-              {
-                result.map((item, index) => (
-                  <QuestionAndAnswer
-                    key={index}
-                    item={item}
-                    index={index}
-                  />
-                ))
-              }
-            </ul>
+          {
+            loader ? <svg width="60" height="60" viewBox="0 0 44 44"><g transform="rotate(0 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(45 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.1875s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(90 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.375s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(135 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.5625s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(180 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.75s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(225 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0.9375s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(270 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="1.125s" repeatCount="indefinite"></animate></circle></g><g transform="rotate(315 22 22)"><circle cx="22" cy="4" r="3" fill="#60A5FA"><animate attributeName="cy" values="4;40;4" dur="1.5s" begin="1.3125s" repeatCount="indefinite"></animate></circle></g></svg> : null
+          }
+
+          <div ref={scrollToAns} className="container h-145 overflow-y-hidden overflow-x-hidden">
+            <div className='dark:text-zinc-300 text-zinc-800'>
+              <ul>
+
+                {
+                  result.map((item, index) => (
+                    <QuestionAndAnswer
+                      key={index}
+                      item={item}
+                      index={index}
+                    />
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <div className="dark:bg-zinc-800 bg-red-100 w-1/2 p-1 pr-5 dark:text-white text-zinc-800 m-auto rounded-4xl border border-zinc-400 flex h-16 mt-20">
+            <input
+              onKeyDown={isEnter}
+              onChange={(e) => setQuestion(e.target.value)}
+              value={question}
+              type="text"
+              className="w-full h-full p-3 outline-none"
+              placeholder="Ask me anything"
+            />
+            <button onClick={askQuestion}>Ask</button>
           </div>
         </div>
-
-        <div className="bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl border border-zinc-400 flex h-16 mt-20">
-          <input
-            onKeyDown={isEnter}
-            onChange={(e) => setQuestion(e.target.value)}
-            value={question}
-            type="text"
-            className="w-full h-full p-3 outline-none"
-            placeholder="Ask me anything"
-          />
-          <button onClick={askQuestion}>Ask</button>
-        </div>
-      </div>
+      </div >
     </div >
+
   )
 }
 

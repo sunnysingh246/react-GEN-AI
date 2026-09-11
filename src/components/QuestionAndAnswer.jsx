@@ -8,7 +8,7 @@ const QuestionAndAnswer = ({item,index}) => {
                 {
                     item.type == 'q' ?
                         <li key={index + Math.random()}
-                            className='text-right p-2 border-8 bg-zinc-700 border-zinc-700 rounded-tl-3xl rounded-br-3xl rounded-bf-3xl w-fit gap-2'
+                            className='text-right p-2 border-8 dark: bg-zinc-700 dark: border-zinc-700 bg-red-100 border-red-100 rounded-tl-3xl rounded-br-3xl rounded-bf-3xl w-fit gap-2'
                         ><Answers ans={item.text} totalResult={1} index={index} type={item.type} />
                         </li>
                         : item.text.map((ansItem, ansIndex) => (
