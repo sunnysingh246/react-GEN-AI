@@ -170,15 +170,7 @@ const App = () => {
         <div className="col-span-4 p-10 flex flex-col">
 
           <h1
-            className="
-              text-4xl
-              text-center
-              bg-clip-text
-              text-transparent
-              bg-gradient-to-r
-              from-pink-700
-              to-violet-700
-            "
+            className=" text-4xl text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700"
           >
             Hello user, ask me anything
           </h1>
@@ -188,26 +180,12 @@ const App = () => {
           {loader && (
             <div className="flex justify-center mt-5">
 
-              <svg
-                width="60"
-                height="60"
-                viewBox="0 0 44 44"
-              >
+              <svg width="60" height="60" viewBox="0 0 44 44">
 
                 <g transform="rotate(0 22 22)">
-                  <circle
-                    cx="22"
-                    cy="4"
-                    r="3"
-                    fill="#60A5FA"
-                  >
-                    <animate
-                      attributeName="cy"
-                      values="4;40;4"
-                      dur="1.5s"
-                      begin="0s"
-                      repeatCount="indefinite"
-                    />
+                  <circle cx="22" cy="4" r="3" fill="#60A5FA" >
+                    <animate attributeName="cy" values="4;40;4" dur="1.5s" begin="0s" repeatCount="indefinite" />
+
                   </circle>
                 </g>
 
@@ -353,11 +331,7 @@ const App = () => {
               <ul className="w-full">
 
                 {result.map((item, index) => (
-                  <QuestionAndAnswer
-                    key={index}
-                    item={item}
-                    index={index}
-                  />
+                  <QuestionAndAnswer key={key} item={item} index={index} />
                 ))}
 
               </ul>
@@ -369,36 +343,14 @@ const App = () => {
           {/* ================= INPUT ================= */}
 
           <div
-            className="
-              bg-red-100
-              dark:bg-zinc-800
-              dark:text-white
-              text-zinc-800
-              w-1/2
-              p-1
-              pr-5
-              m-auto
-              rounded-4xl
-              border
-              border-zinc-400
-              flex
-              h-16
-              mt-5
-            "
-          >
+            className=" bg-red-100 dark:bg-zinc-800 dark:text-white text-zinc-800 w-1/2 p-1 pr-5 m-auto rounded-4xl border border-zinc-400 flex h-15 mt-5" >
 
             <input
               onKeyDown={isEnter}
               onChange={(e) => setQuestion(e.target.value)}
               value={question}
               type="text"
-              className="
-                w-full
-                h-full
-                p-3
-                outline-none
-                bg-transparent
-              "
+              className=" w-full h-full p-3 outline-none bg-transparent"
               placeholder="Ask me anything"
             />
 
