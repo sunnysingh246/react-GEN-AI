@@ -1,35 +1,134 @@
 import React from 'react'
 
-const RecentSearch = (recentHistory, setRecentHistory, setSelectedHistory) => {
+const RecentSearch = ({
+  recentHistory,
+  setRecentHistory,
+  setSelectedHistory
+}) => {
+
   const clearHistory = () => {
-    localStorage.clear()
+
+    localStorage.removeItem('history')
+
     setRecentHistory([])
+
   }
+
   return (
-    <>
-      <div className="col-span-1 dark: bg-zinc-800 bg-red-100 pt-3">
-        <h1 className='text-xl dark: text-white text-zinc-800  flex justify-center'>
-          <span>Recent history</span>
-          <button
-            onClick={clearHistory}
-            className='cursor-pointer'>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" /></svg>
-          </button>
-        </h1>
+    <div
+      className="
+        col-span-1
+        bg-red-100
+        dark:bg-zinc-800
+        pt-3
+        h-screen
+        overflow-hidden
+      "
+    >
 
+      {/* ================= HEADER ================= */}
 
-        <ul className='text-left overflow-auto text-sm mt-2'>
-          {
-            Array.isArray(recentHistory) && recentHistory.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => setSelectedHistory(item)}
-                className='p-1 pl-5 px-5 truncate dark: text-zinc-400 text-zinc-700 cursor-pointer dark: hover:bg-zinc-700 dark: hover:text-zinc-200 bg-red-200 hover:text-zinc-800'>{item}</li>
-            ))
-          }
-        </ul>
-      </div>
-    </>
+      <h1
+        className="
+          text-xl
+          text-zinc-800
+          dark:text-white
+          flex
+          justify-center
+          items-center
+          gap-2
+        "
+      >
+
+        <span>
+          Recent history
+        </span>
+
+        <button
+          onClick={clearHistory}
+          className="cursor-pointer"
+        >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e3e3e3"
+          >
+
+            <path
+              d="
+                m376-300
+                104-104
+                104 104
+                56-56
+                -104-104
+                104-104
+                -56-56
+                -104 104
+                -104-104
+                -56 56
+                104 104
+                -104 104
+                56 56
+                Z
+              "
+            />
+
+          </svg>
+
+        </button>
+
+      </h1>
+
+      {/* ================= HISTORY ================= */}
+
+      <ul
+        className="
+          text-left
+          overflow-y-auto
+          overflow-x-hidden
+          text-sm
+          mt-2
+          w-full
+          h-[calc(100vh-60px)]
+        "
+      >
+
+        {Array.isArray(recentHistory) &&
+          recentHistory.map((item, index) => (
+
+            <li
+              key={index}
+              onClick={() =>
+                setSelectedHistory(item)
+              }
+              className="
+                p-2
+                px-5
+                truncate
+                whitespace-nowrap
+                text-zinc-700
+                dark:text-zinc-400
+                cursor-pointer
+                bg-red-200
+                dark:bg-zinc-800
+                hover:text-zinc-800
+                dark:hover:bg-zinc-700
+                dark:hover:text-zinc-200
+              "
+            >
+
+              {item}
+
+            </li>
+
+          ))}
+
+      </ul>
+
+    </div>
   )
 }
 
